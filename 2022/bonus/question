@@ -1,0 +1,12 @@
+Imagine this is an ascii art drawing of a natural well. The well itself is made of rock (#) and the water is tildes (~).
+What is the volume of water in this well?
+5                             ####
+4         ####~~~~~~~~~~~~~~~~####
+3         ####~~~~~~~~####~~~~####~~~~####
+2 ####~~~~########~~~~############~~~~####~~~~####
+1 ####~~~~########~~~~############~~~~####~~~~####
+------------------------------------------------------------------
+  0   1   2   3   4   5   6   7   8   9   10
+answer = 16
+"""
+heights = [2, 0, 4, 2, 0, 3, 2, 5, 0, 3, 0, 2]
