@@ -18,19 +18,19 @@ class Knot:
 
 def change_pos(knot, x_parent, y_parent):
     if (x_parent - knot.x) > 1:
-        if abs(y_parent - knot.y) > 1:
+        if abs(y_parent - knot.y) >= 1:
             knot.y = y_parent
         knot.x += 1
     elif (x_parent - knot.x) < 1:
-        if abs(y_parent - knot.y) > 1:
+        if abs(y_parent - knot.y) >= 1:
             knot.y = y_parent
         knot.x -= 1
     if (y_parent - knot.y) > 1:
-        if abs(x_parent - knot.x) > 1:
+        if abs(x_parent - knot.x) >= 1:
             knot.x = x_parent
         knot.y += 1
     elif (y_parent - knot.y) < 1:
-        if abs(x_parent - knot.x) > 1:
+        if abs(x_parent - knot.x) >= 1:
             knot.x = x_parent
         knot.y -= 1
     knot.all_positions.add((knot.x, knot.y))
