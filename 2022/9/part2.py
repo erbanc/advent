@@ -15,33 +15,36 @@ class Knot:
             current_knot.child = new_knot
             current_knot = new_knot
 
-
 def change_pos(knot, x_parent, y_parent):
     if (x_parent - knot.x) > 1:
         # parent goes right with gap
-        if abs(y_parent - knot.y) >= 1:
-            # if not on the same line, align them
-            knot.y = y_parent
+        if y_parent - knot.y >= 1:
+            knot.y += 1
+        if y_parent - knot.y <= -1:
+            knot.y -= 1
         # bring child right
         knot.x += 1
     elif (knot.x - x_parent) > 1:
         # parent goes left with gap
-        if abs(y_parent - knot.y) >= 1:
-            # if not on the same line, align them
-            knot.y = y_parent
+        if y_parent - knot.y >= 1:
+            knot.y += 1
+        if y_parent - knot.y <= -1:
+            knot.y -= 1
         # bring child right
         knot.x -= 1
     if (y_parent - knot.y) > 1:
         # parent goes up with gap
-        if abs(x_parent - knot.x) >= 1:
-            # if not on the same column, align them
-            knot.x = x_parent
+        if x_parent - knot.x >= 1:
+            knot.x += 1
+        if x_parent - knot.x <= -1:
+            knot.x -= 1
         knot.y += 1
     elif (y_parent - knot.y) < -1:
         # parent goes down with gap
-        if abs(x_parent - knot.x) >= 1:
-            # if not on the same column, align them
-            knot.x = x_parent
+        if x_parent - knot.x >= 1:
+            knot.x += 1
+        if x_parent - knot.x <= -1:
+            knot.x -= 1
         # bring child down
         knot.y -= 1
     # Add current knot position to list of all positions
