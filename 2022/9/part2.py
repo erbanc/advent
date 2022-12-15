@@ -21,7 +21,7 @@ def change_pos(knot, x_parent, y_parent):
         if abs(y_parent - knot.y) >= 1:
             knot.y = y_parent
         knot.x += 1
-    elif (x_parent - knot.x) < 1:
+    elif (x_parent - knot.x) < -1:
         if abs(y_parent - knot.y) >= 1:
             knot.y = y_parent
         knot.x -= 1
@@ -29,12 +29,11 @@ def change_pos(knot, x_parent, y_parent):
         if abs(x_parent - knot.x) >= 1:
             knot.x = x_parent
         knot.y += 1
-    elif (y_parent - knot.y) < 1:
+    elif (y_parent - knot.y) < -1:
         if abs(x_parent - knot.x) >= 1:
             knot.x = x_parent
         knot.y -= 1
     knot.all_positions.add((knot.x, knot.y))
-    print('Node ' + knot.number.__str__() + ' position : ' + (knot.x, knot.y).__str__())
     if knot.child is not None:
         change_pos(knot.child, knot.x, knot.y)
 
