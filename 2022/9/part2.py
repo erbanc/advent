@@ -56,5 +56,7 @@ with open('./input.txt', 'r') as f:
                 head.x += 1
             head.all_positions.add((head.x, head.y))
             change_pos(head.child, head.x, head.y)
-    knot_9 = head.child.child.child.child.child.child.child.child.child
-    print('Node ' + knot_9.number.__str__() + ' has been on ' + len(knot_9.all_positions).__str__() + ' positions.' )
+    knot = head
+    for _ in range(10):
+        print('Knot ' + knot.number.__str__() + ' has been on ' + len(knot.all_positions).__str__() + ' positions.')
+        knot = knot.child
