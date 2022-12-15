@@ -18,23 +18,36 @@ class Knot:
 
 def change_pos(knot, x_parent, y_parent):
     if (x_parent - knot.x) > 1:
+        # parent goes right with gap
         if abs(y_parent - knot.y) >= 1:
+            # if not on the same line, align them
             knot.y = y_parent
+        # bring child right
         knot.x += 1
-    elif (x_parent - knot.x) < -1:
+    elif (knot.x - x_parent) > 1:
+        # parent goes left with gap
         if abs(y_parent - knot.y) >= 1:
+            # if not on the same line, align them
             knot.y = y_parent
+        # bring child right
         knot.x -= 1
     if (y_parent - knot.y) > 1:
+        # parent goes up with gap
         if abs(x_parent - knot.x) >= 1:
+            # if not on the same column, align them
             knot.x = x_parent
         knot.y += 1
     elif (y_parent - knot.y) < -1:
+        # parent goes down with gap
         if abs(x_parent - knot.x) >= 1:
+            # if not on the same column, align them
             knot.x = x_parent
+        # bring child down
         knot.y -= 1
+    # Add current knot position to list of all positions
     knot.all_positions.add((knot.x, knot.y))
     if knot.child is not None:
+        # update child
         change_pos(knot.child, knot.x, knot.y)
 
 with open('./input.txt', 'r') as f:
