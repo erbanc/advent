@@ -8,6 +8,9 @@ class Knot:
         self.number = number
         self.all_positions = {(0, 0)}
 
+    def update_childs(self):
+        change_pos(self.child, self)
+
     def add_knots(self, n):
         current_knot = self
         for i in range(n):
@@ -15,35 +18,35 @@ class Knot:
             current_knot.child = new_knot
             current_knot = new_knot
 
-def change_pos(knot, x_parent, y_parent):
-    if (x_parent - knot.x) > 1:
+def change_pos(knot, parent):
+    if parent.x - knot.x > 1:
         # parent goes right with gap
-        if y_parent - knot.y >= 1:
+        if parent.y - knot.y >= 1:
             knot.y += 1
-        if y_parent - knot.y <= -1:
+        if parent.y - knot.y <= -1:
             knot.y -= 1
         # bring child right
         knot.x += 1
-    elif (knot.x - x_parent) > 1:
+    elif knot.x - parent.x > 1:
         # parent goes left with gap
-        if y_parent - knot.y >= 1:
+        if parent.y - knot.y >= 1:
             knot.y += 1
-        if y_parent - knot.y <= -1:
+        if parent.y - knot.y <= -1:
             knot.y -= 1
         # bring child right
         knot.x -= 1
-    if (y_parent - knot.y) > 1:
+    if parent.y - knot.y > 1:
         # parent goes up with gap
-        if x_parent - knot.x >= 1:
+        if parent.x - knot.x >= 1:
             knot.x += 1
-        if x_parent - knot.x <= -1:
+        if parent.x - knot.x <= -1:
             knot.x -= 1
         knot.y += 1
-    elif (y_parent - knot.y) < -1:
+    elif parent.y - knot.y < -1:
         # parent goes down with gap
-        if x_parent - knot.x >= 1:
+        if parent.x - knot.x >= 1:
             knot.x += 1
-        if x_parent - knot.x <= -1:
+        if parent.x - knot.x <= -1:
             knot.x -= 1
         # bring child down
         knot.y -= 1
@@ -51,7 +54,7 @@ def change_pos(knot, x_parent, y_parent):
     knot.all_positions.add((knot.x, knot.y))
     if knot.child is not None:
         # update child
-        change_pos(knot.child, knot.x, knot.y)
+        knot.update_childs()
 
 with open('./input.txt', 'r') as f:
     head_movements = f.read().strip().split('\n')
@@ -71,7 +74,7 @@ with open('./input.txt', 'r') as f:
             if direction == 'R':
                 head.x += 1
             head.all_positions.add((head.x, head.y))
-            change_pos(head.child, head.x, head.y)
+            head.update_childs()
     knot = head
     for _ in range(10):
         print('Knot ' + knot.number.__str__() + ' has been on ' + len(knot.all_positions).__str__() + ' positions.')
