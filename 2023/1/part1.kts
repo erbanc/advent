@@ -6,18 +6,7 @@ val lineList = mutableListOf<String>()
 inputStream.bufferedReader().forEachLine { lineList.add(it) }
 val calibrations = mutableListOf<String>()
 lineList.forEach {
-    var lineCorrected = it
-
-    lineCorrected = lineCorrected.replace("seven", "s7n")
-    lineCorrected = lineCorrected.replace("nine", "n9n")
-    lineCorrected = lineCorrected.replace("eight", "e8t")
-    lineCorrected = lineCorrected.replace("two", "t2o")
-    lineCorrected = lineCorrected.replace("one", "o1e")
-    lineCorrected = lineCorrected.replace("three", "t3e")
-    lineCorrected = lineCorrected.replace("four", "f4r")
-    lineCorrected = lineCorrected.replace("five", "fe5")
-    lineCorrected = lineCorrected.replace("six", "s6x")
-    calibrations.add(lineCorrected) }
+    calibrations.add(it) }
 val calibrationsOnlyNumbers = mutableListOf<String>()
 calibrations.forEach { calibration ->
     var numbers = ""
