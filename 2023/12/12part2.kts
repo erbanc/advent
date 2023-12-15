@@ -1,7 +1,7 @@
 import java.io.File
 import java.io.InputStream
 
-class ConditionRecord(var springRow: List<Boolean?>, var arrangement: List<Int>, var nbPossibilities: Long = 0)
+class ConditionRecord(var springRow: String, var arrangement: List<Int>, var nbPossibilities: Long = 0)
 
 val inputStream: InputStream = File("input.txt").inputStream()
 val input: List<String> = inputStream.bufferedReader().readLines()
@@ -15,15 +15,7 @@ input.forEach { condition ->
     val arrangement = initialArrangement.split(",").map { it.toInt() }
     var initialSpringRow = condition.split(" ")[0]
     initialSpringRow = "$initialSpringRow?$initialSpringRow?$initialSpringRow?$initialSpringRow?$initialSpringRow"
-    val springRow = initialSpringRow.toCharArray().map { c ->
-        when (c) {
-            '.' -> true
-            '#' -> false
-            '?' -> null
-            else -> throw Exception()
-        }
-    }
-    conditionRecords.add(ConditionRecord(springRow, arrangement))
+    conditionRecords.add(ConditionRecord(initialSpringRow, arrangement))
 }
 
 var nbiterations: Long = 0
@@ -35,25 +27,26 @@ println(conditionRecords.sumOf { condition ->
     condition.nbPossibilities
 })
 
-fun findPossibilities(springRow: List<Boolean?>, arrangements: List<Int>, conditionRecord: ConditionRecord) {
+fun findPossibilities(springRow: String, arrangements: List<Int>, conditionRecord: ConditionRecord) {
 
     nbiterations++
+    val charArray = springRow.toCharArray()
     val currentArrangement = mutableListOf<Int>()
     var currentDamagedGroupSize = 0
-    for (i in springRow.indices) {
+    for (i in charArray.indices) {
         val j = currentArrangement.lastIndex
         if (currentArrangement.isNotEmpty() && currentArrangement[j] > arrangements[j]) {
             return
         }
-        if (springRow[i] == true) {
+        if (charArray[i] == '.') {
             if (currentDamagedGroupSize > 0) {
                 currentArrangement.add(currentDamagedGroupSize)
                 currentDamagedGroupSize = 0
             }
-        } else if (springRow[i] == false) {
+        } else if (charArray[i] == '#') {
             currentDamagedGroupSize++
             if (i == springRow.lastIndex) currentArrangement.add(currentDamagedGroupSize)
-        } else if (springRow[i] == null) {
+        } else if (charArray[i] == '?') {
             currentArrangement.add(currentDamagedGroupSize)
             break
         }
@@ -72,23 +65,11 @@ fun findPossibilities(springRow: List<Boolean?>, arrangements: List<Int>, condit
         return
     }
 
-    if (springRow.none { s -> s == null }) {
+    if (!springRow.contains('?')) {
         return
     }
 
-    var indice = 0
-    for (i in springRow.indices) {
-        if (springRow[i] == null) {
-            indice = i
-            break
-        }
-    }
-    val ifWorks = springRow.toMutableList()
-    ifWorks[indice] = true
-    val ifNotWorks = springRow.toMutableList()
-    ifNotWorks[indice] = false
-
-    findPossibilities(ifWorks, arrangements, conditionRecord)
-    findPossibilities(ifNotWorks, arrangements, conditionRecord)
+    findPossibilities(springRow.replaceFirst("?", "."), arrangements, conditionRecord)
+    findPossibilities(springRow.replaceFirst("?", "#"), arrangements, conditionRecord)
     return
 }
