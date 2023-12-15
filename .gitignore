@@ -1,3 +1,5 @@
 ./.idea
 ./advent.iml
 ./venv
+/.idea/
+/venv/
