@@ -1,54 +1,32 @@
 import java.io.File
 import java.io.InputStream
-import kotlin.math.abs
 
 val inputStream: InputStream = File("input.txt").inputStream()
-val reports = mutableListOf<String>()
-inputStream.bufferedReader().forEachLine { reports.add(it) }
+var corruptedOutput = ""
+inputStream.bufferedReader().forEachLine { corruptedOutput += it }
 
-var numberSafeReports = 0
-reports.forEach {
-    val levels = it.split(" ").map { it.toInt() }
-    val isSafeAsIs = isSafe(levels)
-    if (isSafeAsIs) {
-        numberSafeReports++
+val regex = Regex("mul\\([0-9]{1,3},[0-9]{1,3}\\)|do\\(\\)|don't\\(\\)")
+val listMatching = regex.findAll(corruptedOutput)
+
+var result = 0
+var enabledMul = true
+
+listMatching.forEach { match ->
+
+    if (match.value == "do()") {
+        enabledMul = true
         return@forEach
     }
 
-    for (i in levels.indices) {
-        val levelsMinusOne = levels.toMutableList()
-        levelsMinusOne.removeAt(i)
-        val isSafeWithoutIndexI = isSafe(levelsMinusOne)
+    if (match.value == "don't()") {
+        enabledMul = false
+        return@forEach
+    }
 
-        if (isSafeWithoutIndexI) {
-            numberSafeReports++
-            return@forEach
-        }
+    if (enabledMul) {
+        val numbers = match.value.removePrefix("mul(").removeSuffix(")").split(',')
+        result += numbers[0].toInt() * numbers[1].toInt()
     }
 }
 
-print(numberSafeReports)
-
-fun isSafe(levels: List<Int>): Boolean {
-
-
-    val containsDuplicates = levels.toSet().size != levels.size
-    if (containsDuplicates) {
-        return false
-    }
-
-    val isAscending = levels.sorted() == levels
-    val isDescending = levels.sortedDescending() == levels
-
-    if (!isAscending && !isDescending) {
-        return false
-    }
-
-    for (i in 0..levels.size - 2) {
-        if (abs(levels[i] - levels[i + 1]) > 3) {
-            return false
-        }
-    }
-
-    return true
-}
+println(result)
